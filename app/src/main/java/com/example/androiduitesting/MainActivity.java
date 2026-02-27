@@ -2,6 +2,7 @@ package com.example.androiduitesting;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -26,20 +27,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         nameField = findViewById(R.id.field_nameEntry);
-        newName  = findViewById(R.id.editText_name);
-
+        newName = findViewById(R.id.editText_name);
         cityList = findViewById(R.id.city_list);
 
-        //String []cities ={"Edmonton", "Vancouver", "Moscow", "Sydney", "Berlin", "Vienna", "Tokyo", "Beijing", "Osaka", "New Delhi"};
-
         dataList = new ArrayList<>();
-
-        //dataList.addAll(Arrays.asList(cities));
-
         cityAdapter = new ArrayAdapter<>(this, R.layout.content, dataList);
-
-
         cityList.setAdapter(cityAdapter);
+
+        // ====== Lab 7: click list item -> ShowActivity ======
+        cityList.setOnItemClickListener((parent, view, position, id) -> {
+            String cityName = (String) parent.getItemAtPosition(position);
+
+            Intent intent = new Intent(MainActivity.this, ShowActivity.class);
+            intent.putExtra(ShowActivity.EXTRA_CITY_NAME, cityName);
+            startActivity(intent);
+        });
+        // ====================================================
 
         final Button addButton = findViewById(R.id.button_add);
         addButton.setOnClickListener(new View.OnClickListener() {
